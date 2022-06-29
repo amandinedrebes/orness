@@ -1,0 +1,149 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API server",
+      "description": "API server",
+      "contact": {
+        "email": "amandine.drebes@gmail.com"
+      },
+      "version": "0.0"
+    },
+    "paths": {
+      "/notes": {
+        "get": {
+          "summary": "display matching notes",
+          "description": "Display all notes matching the tag",
+          "operationId": "GetNotes",
+          "parameters": [
+            {
+              "name": "tag",
+              "in": "query",
+              "description": "Filter by tag",
+              "required": false,
+              "schema": {
+                "default": "",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "sucessful operation",
+              "headers": {},
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Messages"
+                  }
+                }
+              }
+            },
+            "default": {
+              "description": "unexpected error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false,
+          "security": []
+        },
+        "post": {
+          "summary": "Add message in database",
+          "description": "Add valid message in database",
+          "operationId": "AddMessage",
+          "requestBody": {
+            "description": "Message specification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "sucessful operation",
+              "headers": {},
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            },
+            "default": {
+              "description": "unexpected error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false,
+          "security": []
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Error": {
+          "title": "Error",
+          "required": [
+            "code",
+            "message"
+          ],
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "Message": {
+          "title": "Message",
+          "required": [
+            "message"
+          ],
+          "type": "object",
+          "properties": {
+            "tag": {
+              "type": "string",
+              "description": "Optional tag"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "Messages": {
+          "title": "Messages",
+          "type": "object",
+          "properties": {
+            "devices": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Message"
+              },
+              "description": "Message list"
+            }
+          }
+        }
+      }
+    },
+    "tags": []
+  }
